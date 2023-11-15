@@ -17,7 +17,7 @@ services:
             ADMINER_DB: adminer
             ADMINER_DRIVER: pgsql
             ADMINER_PASSWORD: adminer
-            OR
+            # OR
             ADMINER_PASSWORD_FILE: /run/secrets/password_file
             ADMINER_SERVER: postgres
             ADMINER_USERNAME: adminer
@@ -35,21 +35,6 @@ services:
 
 
 ```
-
-## Tags
-
-```
-michalhosna/adminer:4.7.7-en_v1
-```
-
-- `4.7.7` = Adminer version
-- `en` = Adminer flavour (as in https://github.com/vrana/adminer/releases)
-- `v1` = Image version, when something else than adminer version in this repository changes 
-
-## Guide
-You can preffil any/all/none of the environment variables. 
-If you prefill all environment variables including `ADMINER_AUTOLOGIN`, user will be autologed and won't see the login screen at all.
-If you prefill only some variables, user will be presented with form with prefiled (and disabled) fields from env vars.
 
 ## Environment Variables
 
