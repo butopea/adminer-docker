@@ -1,4 +1,4 @@
-REPO = michalhosna/adminer
+REPO = butopea/adminer
 ADMINER_VERSION=4.8.1
 ADMINER_FLAVOUR=-en
 ADMINER_CHECKSUM=4ec36be619bb571e2b5a5d4051bfe06f3fcadb3004969b993f2535f6ce28116b

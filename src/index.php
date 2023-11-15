@@ -52,7 +52,12 @@ function adminer_object(): Adminer
             switch ($key) {
                 case 'db': return $this->getEnv('ADMINER_DB');
                 case 'driver': return $this->getEnv('ADMINER_DRIVER');
-                case 'password': return $this->getEnv('ADMINER_PASSWORD');
+                case 'password': 
+                    $passwordFile = $this->getEnv('ADMINER_PASSWORD_FILE');
+                    if ($passwordFile && is_readable($passwordFile)) {
+                        return file_get_contents($passwordFile);
+                    }
+                    return $this->getEnv('ADMINER_PASSWORD');
                 case 'server': return $this->getEnv('ADMINER_SERVER');
                 case 'username': return $this->getEnv('ADMINER_USERNAME');
                 case 'name': return $this->getEnv('ADMINER_NAME');

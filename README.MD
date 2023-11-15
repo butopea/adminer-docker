@@ -1,6 +1,6 @@
 # Docker Adminer with env login
 
-[Adminer](https://www.adminer.org) docker image with extended env variables for autologin.
+[Adminer](https://www.adminer.org) docker image with extended env variables for autologin. Supports Docker Swarm Secrets.
 
 Docker hub: http://hub.docker.com/r/butopea/adminer
 
@@ -17,7 +17,7 @@ services:
             ADMINER_DB: adminer
             ADMINER_DRIVER: pgsql
             ADMINER_PASSWORD: adminer
-            # OR
+            # OR #
             ADMINER_PASSWORD_FILE: /run/secrets/password_file
             ADMINER_SERVER: postgres
             ADMINER_USERNAME: adminer
@@ -32,14 +32,29 @@ services:
             POSTGRES_DB: adminer
             POSTGRES_USER: adminer
             POSTGRES_PASSWORD: adminer
+            # OR #
+            POSTGRES_PASSWORD_FILE: /run/secrets/password_file
 
 
 ```
 
+## Tags
+
+```
+butopea/adminer:4.8.1-en_v1
+```
+
+- `4.8.1` = Adminer version
+- `en` = Adminer flavour (as in https://github.com/vrana/adminer/releases)
+- `v1` = Image version, when something else than adminer version in this repository changes 
+
 ## Environment Variables
 
-### `ADMINER_DB, ADMINER_PASSWORD, ADMINER_SERVER, ADMINER_USERNAME`
-I hope those speak for themselves
+### `ADMINER_DB, ADMINER_PASSWORD, ADMINER_PASSWORD_FILE, ADMINER_SERVER, ADMINER_USERNAME`
+
+### `ADMINER_PASSWORD_FILE`
+
+If provided, script tries read content of file and uses it as password. Overwrites `ADMIN_PASSWORD`. Useful if using Docker Swarm Secrets
 
 ### `ADMINER_DRIVER`
 Value from driver select
