@@ -2,21 +2,23 @@
 
 [Adminer](https://www.adminer.org) docker image with extended env variables for autologin.
 
-Docker hub: http://hub.docker.com/r/michalhosna/adminer
+Docker hub: http://hub.docker.com/r/butopea/adminer
 
 ## Exapmle:
 ```yaml
-version: '2.4'
+version: '3.8'
 
 services:
     adminer:
-        image: michalhosna/adminer
+        image: butopea/adminer
         ports:
             - 8080:8080
         environment:
             ADMINER_DB: adminer
             ADMINER_DRIVER: pgsql
             ADMINER_PASSWORD: adminer
+            OR
+            ADMINER_PASSWORD_FILE: /run/secrets/password_file
             ADMINER_SERVER: postgres
             ADMINER_USERNAME: adminer
             ADMINER_AUTOLOGIN: 1
