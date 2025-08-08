@@ -1,0 +1,68 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+env:
+  REPO: butopea/adminer
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Extract version info from Dockerfile
+      id: version
+      run: |
+        ADMINER_VERSION=$(grep "ARG ADMINER_VERSION=" src/Dockerfile | cut -d'=' -f2)
+        ADMINER_FLAVOUR=$(grep "ARG ADMINER_FLAVOUR=" src/Dockerfile | cut -d'=' -f2 | tr -d '"')
+        TAG="${ADMINER_VERSION}${ADMINER_FLAVOUR}"
+        echo "adminer_version=${ADMINER_VERSION}" >> $GITHUB_OUTPUT
+        echo "adminer_flavour=${ADMINER_FLAVOUR}" >> $GITHUB_OUTPUT
+        echo "tag=${TAG}" >> $GITHUB_OUTPUT
+        echo "Extracted: VERSION=${ADMINER_VERSION}, FLAVOUR=${ADMINER_FLAVOUR}, TAG=${TAG}"
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+    
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REPO }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=raw,value=${{ steps.version.outputs.tag }}
+          type=raw,value=latest,enable={{is_default_branch}}
+    
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: ./src
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
