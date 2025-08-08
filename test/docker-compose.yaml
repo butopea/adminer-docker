@@ -4,19 +4,19 @@ services:
         ports:
             - 8080:8080
         environment:
-            ADMINER_DB: adminer
+            ADMINER_DB: adminer_db
             ADMINER_DRIVER: pgsql
-            ADMINER_PASSWORD: adminer
+            ADMINER_PASSWORD: adminer_password
             ADMINER_SERVER: postgres
-            ADMINER_USERNAME: adminer
+            ADMINER_USERNAME: adminer_user
             ADMINER_AUTOLOGIN: 1
-            ADMINER_NAME: This will be in the title!
+            ADMINER_NAME: Window Title
 
 
     postgres:
         image: postgres:10-alpine
         restart: on-failure
         environment:
-            POSTGRES_DB: adminer
-            POSTGRES_USER: adminer
-            POSTGRES_PASSWORD: adminer
+            POSTGRES_DB: adminer_db
+            POSTGRES_USER: adminer_user
+            POSTGRES_PASSWORD: adminer_password

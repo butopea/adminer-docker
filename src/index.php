@@ -1,15 +1,9 @@
 <?php
 declare(strict_types=1);
 
-if (basename($_SERVER['REQUEST_URI']) === 'adminer.css' && is_readable('adminer.css')) {
-    header('Content-Type: text/css');
-    readfile(__DIR__ . '/adminer.css');
-    exit;
-}
-
-function adminer_object(): Adminer
+function adminer_object()
 {
-    return new class extends Adminer
+    return new class extends Adminer\Adminer
     {
         public function name(): ?string
         {
@@ -21,7 +15,7 @@ function adminer_object(): Adminer
             parent::loginForm();
 
             if ($this->getEnv('ADMINER_AUTOLOGIN')) {
-                echo script('
+                echo Adminer\script('
                     if (document.querySelector(\'#content > div.error\') == null) {
                         document.addEventListener(\'DOMContentLoaded\', function () {
                             document.forms[0].submit()
@@ -38,9 +32,9 @@ function adminer_object(): Adminer
             if ($envValue !== null) {
                 $value = sprintf(
                     '<input name="auth[%s]" type="%s" value="%s">',
-                    h($name),
-                    h($name === 'password' ? 'password' : 'text'),
-                    h($envValue)
+                    Adminer\h($name),
+                    Adminer\h($name === 'password' ? 'password' : 'text'),
+                    Adminer\h($envValue)
                 );
             }
 
@@ -72,4 +66,4 @@ function adminer_object(): Adminer
     };
 }
 
-require __DIR__ . '/adminer.php';
+include './adminer.php';
