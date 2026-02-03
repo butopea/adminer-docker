@@ -28,7 +28,7 @@ RUN curl -L https://github.com/vrana/adminer/releases/download/v${ADMINER_VERSIO
     echo "${ADMINER_CHECKSUM}  adminer.php"|sha256sum -c -
 
 COPY index.php /var/adminer/index.php
-COPY php.ini /etc/php8/conf.d/99_docker.ini
+COPY php.ini /etc/php84/conf.d/99_docker.ini
 
 EXPOSE 8080
 
