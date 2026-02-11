@@ -20,11 +20,11 @@ RUN apk add --no-cache \
 
 WORKDIR /var/adminer
 
-ARG ADMINER_VERSION=5.4.1
+ARG ADMINER_VERSION=5.4.2
 ARG ADMINER_FLAVOUR="-en"
-ARG ADMINER_CHECKSUM="85d70270c469a4a7ff6f636d86bc714e1dfc603935e73c455aab7cafa6a4f0cb"
+ARG ADMINER_CHECKSUM="f8b1cdc676d72e88d2d470dd05f2dcb7212bf6cdcf78f1eadb7fc292f4cefd39"
 
-RUN curl -L https://github.com/vrana/adminer/releases/download/v${ADMINER_VERSION}/adminer-${ADMINER_VERSION}${ADMINER_FLAVOUR}.php -o adminer.php && \
+RUN curl -fL https://github.com/vrana/adminer/releases/download/v${ADMINER_VERSION}/adminer-${ADMINER_VERSION}${ADMINER_FLAVOUR}.php -o adminer.php && \
     echo "${ADMINER_CHECKSUM}  adminer.php"|sha256sum -c -
 
 COPY index.php /var/adminer/index.php
